@@ -1,0 +1,22 @@
+---
+// Not on the live site (no 404 page was captured). Without a 404.html,
+// Cloudflare Pages answers every unknown URL with the home page and a 200 —
+// so removed properties and mistyped links looked like the home page.
+// Cloudflare serves this file with a real 404 status. Styled like privacy-policy.
+import Layout from '../layouts/Layout.astro';
+import { SOLD_YEARS } from '../config/site.js';
+---
+
+<Layout title="Page not found">
+  <div class="bg-paper px-2.5 pt-8 pb-12 md:pt-[180px]">
+    <div class="mx-auto max-w-site font-roboto text-[15px] text-body">
+      <h1 class="mb-4 text-[40px] leading-tight font-medium">PAGE NOT FOUND</h1>
+      <p class="mb-4">The page you were looking for isn’t here. The property may have been sold or removed.</p>
+      <ul class="flex flex-wrap gap-[5px]">
+        <li><a href="/" class="block rounded-[3px] bg-brown p-1.5 text-base leading-none font-medium text-paper hover:text-hover-green">Current listings</a></li>
+        <li><a href={`/${SOLD_YEARS[0]}-sold/`} class="block rounded-[3px] bg-brown p-1.5 text-base leading-none font-medium text-paper hover:text-hover-green">Sold properties</a></li>
+        <li><a href="/about-maddox-realty/" class="block rounded-[3px] bg-brown p-1.5 text-base leading-none font-medium text-paper hover:text-hover-green">About Maddox Realty</a></li>
+      </ul>
+    </div>
+  </div>
+</Layout>

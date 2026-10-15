@@ -117,10 +117,18 @@ On: `/`, `/2016-sold/`, `/2017-sold/`, `/2018-sold/`, `/2019-sold/`, `/2020-sold
 On: `/sbws_property/1-95-acres-hwy-380/`, `/sbws_property/100-acres-fm-2950/`, `/sbws_property/101-brad-street/`, `/sbws_property/1014-west-archer/`, `/sbws_property/10325-hwy-199/`, `/sbws_property/108-e-thompson-st/`, `/sbws_property/11-31-acres-hwy-148/`, `/sbws_property/11-acres-mountain-home-road/`, and 126 more.
 - **too many redirects** — 4136 static rules in `_redirects`; Cloudflare Pages reads the first 2,000 and silently drops the rest. Move the image redirects to a Bulk Redirect list in the Cloudflare dashboard.
 
+**Resolved (Oct 2026):** lightbox → the property gallery's native `<dialog>`
+viewer (`PropertyGallery.astro`); map embeds → keyless iframe (exception 2);
+redirects → 26 rules in `public/_redirects`, photo URLs in
+`redirects/wp-property-photos.csv` for a Bulk Redirect list. Property paths
+above are the old `/sbws_property/` ones; they now live at `/property/`.
+
 
 
 ### Forms
-None found — nothing to re-wire.
+None found — nothing to re-wire. The starter's form kit (`FormShell.astro`,
+`forms.js`, example `ContactForm`) was removed and `FORMS` is `null` in
+`src/config/site.js`.
 
 
 
@@ -316,6 +324,21 @@ contain, a link to nowhere. Fix and note it.
 ## Notes for this site
 
 <!-- wp-capture:custom-start -->
+
+## Build status (15 Oct 2026)
+
+Done: scaffold, theme, layout/header/footer, every page (home, 11 Sold years,
+about, privacy, 338 properties), redirects, post editor (`sbws.json` passes).
+Checked against `_source/screens/` at 1440 and 390 for home, a Sold year,
+about and a property; gallery, lightbox and images tested in a browser.
+Nothing is committed yet.
+
+Still to do:
+- Deploy (step 7), then import `redirects/wp-property-photos.csv` as a
+  Cloudflare Bulk Redirect list and add the site in the post editor.
+- Sign-off on the deviations below; client email with the list below.
+- Pre-launch checklist: link click-through, hand tab-through, real-phone
+  gallery test, `dig MX` before DNS.
 ## Post editor
 
 Staff edit properties with the SBWS post editor
@@ -397,6 +420,8 @@ the format is in `~/github/sbws-post-editor/docs/SITE-SETUP.md`.
 - Mobile property pages: the live title band overlaps the lower half of the
   header; here the header band is whole, as on every other page.
 - Home has a visually hidden `<h1>` (the live page's only h1s were card titles).
+- `src/pages/404.astro` is new (none was captured). Without it Cloudflare Pages
+  answers unknown URLs, including deleted properties, with the home page and a 200.
 
 ## For the client email
 
@@ -443,7 +468,7 @@ page, so get them right first.
 line only where an Astro URL differs, never one whose two sides match. Anything
 Cloudflare can't express there goes to a Redirect Rule — see Conventions →
 Redirects.
-6. Post editor — staff edit the `sbws_property` in the SBWS post editor, so: write `sbws.json` in the repo root (`~/github/sbws-post-editor/docs/SITE-SETUP.md` part 2; start from the closest file in `~/github/sbws-post-editor/docs/examples/`), run `npx astro sync && node scripts/check-editor.mjs` until it passes, and add the "Post editor" section (part 3) to this file **inside the `wp-capture:custom` markers**, so a re-capture keeps it. Delete any script that generated the posts from `_source/`. After launch the site is added in the editor (Manage sites; its Site setup tab has these steps as a prompt).
+6. Post editor — staff edit the properties (collection `property`, formerly `sbws_property`) in the SBWS post editor, so: write `sbws.json` in the repo root (`~/github/sbws-post-editor/docs/SITE-SETUP.md` part 2; start from the closest file in `~/github/sbws-post-editor/docs/examples/`), run `npx astro sync && node scripts/check-editor.mjs` until it passes, and add the "Post editor" section (part 3) to this file **inside the `wp-capture:custom` markers**, so a re-capture keeps it. Delete any script that generated the posts from `_source/`. After launch the site is added in the editor (Manage sites; its Site setup tab has these steps as a prompt).
 7. Deploy — GitHub → Cloudflare Pages, build `npm run build`, output `dist`.
 `build` runs `astro sync`, `scripts/check-editor.mjs` (`sbws.json` still
 matches the content collections) and `scripts/check-deploy.mjs` first, so
@@ -473,6 +498,11 @@ and image dimensions are all checkable — check them.
 
 - **Astro's dev server goes stale** after structural edits. Hard reload, then
 restart `npm run dev`. Don't debug code that isn't running.
+- Astro runs **one dev/preview server per project** (`npx astro dev stop`,
+`npx astro preview stop`). Neither applies `public/_redirects`: the
+`/sbws_property/` → `/property/` redirects only work on Cloudflare.
+- First visit to a property page in dev is slow while its photos are optimised;
+a full `npm run build` takes about 3 minutes (≈7,400 image variants).
 - **Keep the project on a native Linux filesystem**, not a mounted Windows
 partition — Vite's watcher is unreliable on NTFS and git reports phantom
 permission diffs.
@@ -485,18 +515,18 @@ permission diffs.
 - [ ] All pages at 1440 / 820 / 390 against `_source/screens/`
 - [ ] Every link clicked, footer included
 - [ ] `npm run a11y` passes, and every page tabbed through by hand at 1440 and 390
-- [ ] Every form submitted once to the contact API — clean keys in the
+- [x] N/A — no forms. Every form submitted once to the contact API — clean keys in the
 notification email, `name` filled on split-name forms
-- [ ] Endpoint, slug and Turnstile key only in `src/config/site.js`; real key,
+- [x] N/A — no forms. Endpoint, slug and Turnstile key only in `src/config/site.js`; real key,
 not the test key
-- [ ] `CF_PAGES_BRANCH=main npm run check` passes with no Turnstile
+- [x] `CF_PAGES_BRANCH=main npm run check` passes with no Turnstile
 test-key or `<placeholder>` warning
-- [ ] Forms database row handed over and inserted, then `active` set to 1
-- [ ] `sbws.json` passes `node scripts/check-editor.mjs`, the Post editor section is inside the custom markers, no post-generating script is left, and the site shows Ready in the post editor
+- [x] N/A — no forms. Forms database row handed over and inserted, then `active` set to 1
+- [ ] `sbws.json` passes `node scripts/check-editor.mjs`, the Post editor section is inside the custom markers, no post-generating script is left (all done), and the site shows Ready in the post editor (after launch)
 - [ ] Lightbox and carousel on a real phone, not the DevTools emulator
 - [ ] `dig MX maddoxrealty.com` checked before any DNS change
 - [ ] Old URLs resolve — spot-check `/author/*`, `/feed`, an old
 `/wp-content/uploads/` image path — and `/` answers 200, not a redirect
-- [ ] Favicon present at `/favicon.ico`
-- [ ] Sitemap generating at `/sitemap-index.xml`
+- [x] Favicon present at `/favicon.ico`
+- [x] Sitemap generating at `/sitemap-index.xml`
 - [ ] Client emailed about typos, stale prices and dated content
