@@ -331,14 +331,47 @@ Done: scaffold, theme, layout/header/footer, every page (home, 11 Sold years,
 about, privacy, 338 properties), redirects, post editor (`sbws.json` passes).
 Checked against `_source/screens/` at 1440 and 390 for home, a Sold year,
 about and a property; gallery, lightbox and images tested in a browser.
-Nothing is committed yet.
+
+Deployed on Cloudflare Pages at https://maddoxrealty.pages.dev (builds from
+`main`). The post editor is connected and committing (test properties added
+and deleted 15 Oct). maddoxrealty.com still serves the WordPress site.
 
 Still to do:
-- Deploy (step 7), then import `redirects/wp-property-photos.csv` as a
-  Cloudflare Bulk Redirect list and add the site in the post editor.
+- Import `redirects/wp-property-photos.csv` as a Cloudflare Bulk Redirect list
+  (at DNS time).
 - Sign-off on the deviations below; client email with the list below.
 - Pre-launch checklist: link click-through, hand tab-through, real-phone
   gallery test, `dig MX` before DNS.
+- Maybe: a `.node-version` file containing `22` (Astro 7 needs Node ≥22.12).
+  Proposed, **user said not yet** — don't add it unasked.
+
+## Cloudflare Pages
+
+- **Build cache is on** (Settings → Build). It keeps `node_modules/.astro`,
+  Astro's processed-image cache, between builds: a build with that cache warm
+  takes ~20 s locally, against ~3 min without it, so post-editor publishes
+  go live much faster. It affects only the build machine, never what visitors
+  get. The cache is dropped after 7 days with no builds, so the first build after
+  a quiet week is slow again.
+- Build system: use **v3** (needs ≥v2 for the build cache). Not confirmed
+  from here which one the project is on; builds succeed, so its Node is new
+  enough.
+- Possible later speed-up, not done: `PropertyGallery.astro` re-encodes every
+  1600px q82 photo to 1600px q80 for the lightbox, about a third of all image
+  work for almost no saving. Serving the original would cut cold builds by
+  about a third.
+- **404 page** (`src/pages/404.astro`): without one, Pages answers every unknown
+  URL with the home page and a 200. Deleted properties now return a real 404.
+- **Stale test pages:** `/property/test/` and `/property/test-only/` still show
+  on pages.dev from Cloudflare's edge cache (`cf-cache-status: HIT`). They were
+  stored on 15 Oct around 14:36 UTC with `cache-control: public, s-maxage=604800`,
+  so they expire around 22 Oct. Nothing in the repo sets that header, and every
+  page now serves Pages' normal `max-age=0, must-revalidate` uncached, so the
+  cause is unknown (a dashboard setting changed that morning?). A pages.dev URL
+  can't be purged; on the real domain use Caching → Custom Purge. Add `?x=1` to
+  bypass the cache when checking a change. If `HIT` + `s-maxage` turns up on a
+  current page, find the setting before launch.
+
 ## Post editor
 
 Staff edit properties with the SBWS post editor
@@ -440,7 +473,12 @@ the format is in `~/github/sbws-post-editor/docs/SITE-SETUP.md`.
   phone lines and vertically centred, so the checker's line test sees it as
   "above" the last line. Tabbing phones → icon is left-to-right; kept.
 - Port 4329 (the a11y script's) may be taken by another project's
-  `astro preview`; Astro runs one preview per project, so stop it first.
+  `astro preview` (on 15 Oct: `~/github/votestevewashington`). The script
+  then silently tests *that* site and reports "first tab stop is nothing" on
+  every page. Check with `ss -ltnp | grep 4329`. Don't kill another project's
+  server unasked. Instead start `npx astro preview --port 4331` here and run a
+  copy of the script with `PORT = 4331`.
+- 404 page checked 15 Oct: same two known issues as every page, nothing new.
 <!-- wp-capture:custom-end -->
 
 ---
