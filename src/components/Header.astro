@@ -1,0 +1,28 @@
+---
+// Header (Elementor template 8266): logo left; the four agents' phone numbers
+// and the Facebook icon right. The site has no menu. Below md it is a
+// saddle-coloured band above the page; from md up it is transparent and sits
+// over the page's first band.
+import { AGENTS, SITE } from '../config/site.js';
+---
+
+<header class="bg-saddle md:absolute md:inset-x-0 md:top-0 md:z-10 md:bg-transparent">
+  <div class="mx-auto flex max-w-site flex-wrap items-center justify-between gap-y-2 px-2.5 py-5 md:flex-nowrap">
+    <a href="/" class="block w-full max-w-[342px] md:w-auto">
+      <img src="/images/maddox-realty-logo-450x130-1.webp" width="450" height="130" alt={SITE.name} class="h-auto w-full max-w-[89vw] md:w-[342px]" />
+    </a>
+    <div class="ml-auto flex items-center gap-5 pr-0 md:pr-[15px] lg:pr-0">
+      <ul class="font-arial text-base text-brown md:text-[17px]">
+        {AGENTS.map((a) => (
+          <li class="h-[25px] text-right hover:font-bold">
+            {/* The whole line is the link, so the number isn't a colour-only link inside text. */}
+            <a href={`tel:${a.phone}`} aria-label={`Call ${a.name}, ${a.phone}`}>{a.name}&nbsp;<span class="text-black">{a.phone}</span></a>
+          </li>
+        ))}
+      </ul>
+      <a href={SITE.facebook} target="_blank" rel="noreferrer" aria-label="Maddox Realty on Facebook" class="text-brown">
+        <svg aria-hidden="true" class="h-[50px] w-[44px] fill-current" viewBox="0 0 448 512"><path d="M400 32H48A48 48 0 0 0 0 80v352a48 48 0 0 0 48 48h137.25V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.27c-30.81 0-40.42 19.12-40.42 38.73V256h68.78l-11 71.69h-57.78V480H400a48 48 0 0 0 48-48V80a48 48 0 0 0-48-48z"></path></svg>
+      </a>
+    </div>
+  </div>
+</header>

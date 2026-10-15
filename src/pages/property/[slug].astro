@@ -1,0 +1,75 @@
+---
+// Every property: src/content/property/<slug>/index.md → /property/<slug>/.
+// (Elementor single template 8256.) Old /sbws_property/<slug>/ addresses
+// redirect here — see public/_redirects.
+import { render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import SoldSidebar from '../../components/SoldSidebar.astro';
+import PropertyGallery from '../../components/property/PropertyGallery.astro';
+import { getProperties, galleryFor, priceText, availabilityText } from '../../lib/properties.js';
+
+export async function getStaticPaths() {
+  return (await getProperties()).map((entry) => ({ params: { slug: entry.id }, props: { entry } }));
+}
+
+const { entry } = Astro.props;
+const { data } = entry;
+const { Content } = await render(entry);
+const photos = galleryFor(entry);
+
+// No description written? Use the opening of the summary, as search engines would.
+const plain = (entry.body ?? '').replace(/[#*_>\\`[\]()!|-]/g, ' ').replace(/<[^>]+>/g, ' ').replace(/\s+/g, ' ').trim();
+const description = data.description || (plain.length > 155 ? `${plain.slice(0, plain.lastIndexOf(' ', 152))}…` : plain);
+const mapSrc = data.map && `https://maps.google.com/maps?q=${encodeURIComponent(data.map)}&z=14&output=embed`;
+const h2 = 'font-arial text-[28px] leading-tight text-ink';
+---
+
+<Layout title={data.title} description={description}>
+  <section class="bg-tan px-2.5 pt-5 pb-[30px] md:pt-[160px]">
+    <h1 class="mx-auto max-w-site font-arial text-4xl leading-tight font-extrabold text-ink">{data.title}</h1>
+  </section>
+
+  <div class="bg-tan px-2.5 pb-[30px]">
+    <div class="mx-auto flex max-w-site flex-col gap-5 lg:flex-row">
+      <div class="flex min-w-0 flex-1 flex-col gap-5 px-2.5">
+        <PropertyGallery photos={photos} title={data.title} />
+        <p class="font-roboto text-xl font-bold text-body">Price: {priceText(data)}</p>
+        {data.size && <p class="font-roboto text-xl font-bold text-body">Size: {data.size}</p>}
+        <h2 class={h2}>Availability</h2>
+        <p class="font-roboto text-lg text-ink">{availabilityText(data)}</p>
+        <h2 class={h2}>Property Features</h2>
+        {data.features.length > 0 && (
+          <ul class="font-roboto text-lg text-ink">
+            {data.features.map((f) => <li>• {f}</li>)}
+          </ul>
+        )}
+        <h2 class={h2}>Property Summary</h2>
+        <div class="summary font-open text-base font-extralight text-ink">
+          <Content />
+        </div>
+        {mapSrc ? (
+          <div class="my-5 h-[400px] w-full border border-map-border">
+            <iframe src={mapSrc} title={`Map of ${data.title}`} class="h-full w-full border-0" loading="lazy" referrerpolicy="no-referrer-when-downgrade" allowfullscreen></iframe>
+          </div>
+        ) : (
+          <p class="font-roboto text-lg text-ink">Map coordinates are not available for this property.</p>
+        )}
+      </div>
+      <SoldSidebar variant="property" class="lg:w-[250px] lg:flex-none" />
+    </div>
+  </div>
+</Layout>
+
+<style>
+  /* Property bodies are Markdown written by staff; style what Markdown makes. */
+  .summary :global(p),
+  .summary :global(ul),
+  .summary :global(ol) { margin-block-end: 0.9rem; }
+  .summary :global(strong) { font-weight: bolder; }
+  .summary :global(ol) { list-style: decimal; padding-left: 2.5rem; }
+  .summary :global(ul) { list-style: disc; padding-left: 2.5rem; }
+  .summary :global(li) { margin-block-end: 0.9rem; }
+  .summary :global(a) { text-decoration: underline; }
+  .summary :global(h2), .summary :global(h3) { font-family: var(--font-arial); font-size: 1.4rem; margin-block: 1rem 0.5rem; font-weight: 400; }
+  .summary :global(img) { height: auto; max-width: 100%; }
+</style>

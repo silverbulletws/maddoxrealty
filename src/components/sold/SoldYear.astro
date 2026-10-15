@@ -1,0 +1,19 @@
+---
+// A "Properties SOLD in <year>" page: hay-field or fence photo with the title,
+// then that year's sales in each category. Each src/pages/<year>-sold.astro is
+// just this with its year and photo.
+import Layout from '../../layouts/Layout.astro';
+import PageHero from '../PageHero.astro';
+import Listings from '../Listings.astro';
+import { CATEGORIES } from '../../config/site.js';
+import { getProperties, soldIn } from '../../lib/properties.js';
+
+const { year, image } = Astro.props;
+const sold = (await getProperties()).filter(soldIn(year));
+const sections = CATEGORIES.map((category) => ({ category, grids: [sold.filter((p) => p.data[category.key])] }));
+---
+
+<Layout title={`${year} Sold`} description={`Properties sold in ${year} by Maddox Realty in Jack County and North Texas.`}>
+  <PageHero image={image} title={`Properties SOLD in ${year} by Maddox Realty`} />
+  <Listings sections={sections} />
+</Layout>

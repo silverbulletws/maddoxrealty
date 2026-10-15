@@ -1,0 +1,16 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# the wp-capture reference folder — hundreds of MB, never deployed
+_source/
+
+# originals kept after compressing a file to fit Cloudflare's 25 MiB limit
+*.original.*
+
+.env
+.env.*
+.DS_Store

@@ -1,0 +1,34 @@
+{
+  "name": "sbws-site",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "engines": {
+    "node": ">=22.12.0"
+  },
+  "scripts": {
+    "dev": "astro dev",
+    "check": "astro sync && node scripts/check-editor.mjs && node scripts/check-deploy.mjs",
+    "build": "astro sync && node scripts/check-editor.mjs && node scripts/check-deploy.mjs && astro build",
+    "preview": "astro preview",
+    "a11y": "node scripts/a11y-check.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.4",
+    "@fontsource/bitter": "^5.2.6",
+    "@fontsource/open-sans": "^5.2.6",
+    "@fontsource/roboto": "^5.2.6",
+    "@fontsource/roboto-condensed": "^5.2.6",
+    "@tailwindcss/vite": "^4.3.3",
+    "astro": "^7.3.5",
+    "tailwindcss": "^4.3.3"
+  },
+  "devDependencies": {
+    "@axe-core/playwright": "^4.13.0",
+    "playwright": "^1.63.0"
+  },
+  "allowScripts": {
+    "esbuild": true
+  }
+}

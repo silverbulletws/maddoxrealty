@@ -1,0 +1,39 @@
+---
+// Every page. The skip link is the first focusable element on the page, hidden
+// until focused so the design is untouched. From md up the header sits over the
+// top of the page (each page's first band leaves room for it), as on the live site.
+import '../styles/global.css';
+import Header from '../components/Header.astro';
+import Footer from '../components/Footer.astro';
+import { SITE } from '../config/site.js';
+
+const { title, description = '' } = Astro.props;
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+
+<!doctype html>
+<html lang="en-US">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>{title ? `${title} – ${SITE.name}` : `${SITE.name} – ${SITE.tagline}`}</title>
+    {description && <meta name="description" content={description} />}
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+    <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
+    <link rel="sitemap" href="/sitemap-index.xml" />
+  </head>
+  <body class="bg-tan text-body">
+    <a
+      href="#main"
+      class="sr-only focus:not-sr-only focus:fixed focus:top-2 focus:left-2 focus:z-[100] focus:bg-paper focus:px-4 focus:py-2"
+    >Skip to content</a>
+    <div class="relative">
+      <Header />
+      <main id="main" tabindex="-1">
+        <slot />
+      </main>
+    </div>
+    <Footer />
+  </body>
+</html>

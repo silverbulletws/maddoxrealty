@@ -1,0 +1,17 @@
+---
+// A full-width photo band at the top of a page, under the header. With a
+// title (the Sold pages) the title sits in a rounded brown box in the middle.
+const { image, minHeight = 600, title } = Astro.props;
+---
+
+<section
+  class="flex items-center justify-center bg-cover bg-center bg-no-repeat px-2.5"
+  style={`background-image:url(${image});min-height:${minHeight}px`}
+>
+  {title && (
+    <div class="w-full max-w-hero-box rounded-[20px] bg-hero-box p-2.5">
+      <h1 class="py-2.5 text-center font-arial text-[55px] leading-none text-paper">{title}</h1>
+    </div>
+  )}
+  <slot />
+</section>

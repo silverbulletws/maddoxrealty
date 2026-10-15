@@ -1,0 +1,36 @@
+# Cloudflare Pages redirects. One rule per line: <from> <to> <status>. First match wins.
+# Not .htaccess: no regex, no query strings, no host rules, never a line whose two sides match.
+# Old WordPress property photo URLs are NOT here (over the 2,000-rule limit):
+# they are in redirects/wp-property-photos.csv, for a Cloudflare Bulk Redirect list.
+
+# Properties moved from /sbws_property/<slug>/ to /property/<slug>/ (Oct 2026).
+/sbws_property            /  301
+/sbws_property/           /  301
+/sbws_property/*          /property/:splat  301
+/sbws-property            /  301
+/sbws-property/           /  301
+/sbws-property/*          /property/:splat  301
+/property                 /  301
+/property/                /  301
+
+# WordPress-only URLs
+/author/*                /  301
+/feed                    /  301
+/feed/*                  /  301
+/comments/feed/*         /  301
+/wp-admin/*              /  301
+/wp-login.php            /  301
+/xmlrpc.php              /  301
+
+# Old WordPress addresses of the images and PDFs the site still uses
+/wp-content/uploads/2021/09/sold-transparent.png  /images/sold-transparent.webp  301
+/wp-content/uploads/2025/12/jacksboro-chamber-2.webp  /images/jacksboro-chamber-2.webp  301
+/wp-content/uploads/2025/12/maddox-cattle-portrait2-1.webp  /images/maddox-cattle-portrait2-1.webp  301
+/wp-content/uploads/2025/12/maddox-family-may-2026.webp  /images/maddox-family-may-2026.webp  301
+/wp-content/uploads/2025/12/maddox-realty-jack-county-hay-field-at-sunset.webp  /images/maddox-realty-jack-county-hay-field-at-sunset.webp  301
+/wp-content/uploads/2025/12/maddox-realty-logo-450x130-1.webp  /images/maddox-realty-logo-450x130-1.webp  301
+/wp-content/uploads/2025/12/maddox-realty-office-jacksboro-texas-2.webp  /images/maddox-realty-office-jacksboro-texas-2.webp  301
+/wp-content/uploads/2025/12/texas-real-estate-commission-logo3.webp  /images/texas-real-estate-commission-logo3.webp  301
+/wp-content/uploads/2025/12/wood-fence-slider.webp  /images/wood-fence-slider.webp  301
+/wp-content/uploads/2026/02/Consumer-Protection.pdf  /docs/Consumer-Protection.pdf  301
+/wp-content/uploads/2026/02/Information-About-Brokerage-Services.pdf  /docs/Information-About-Brokerage-Services.pdf  301

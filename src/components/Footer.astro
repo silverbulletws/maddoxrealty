@@ -1,0 +1,55 @@
+---
+// Footer (Elementor template 8246): three centred columns on saddle, then the
+// copyright bar.
+import { AGENTS, SITE } from '../config/site.js';
+
+const linkCls = 'hover:text-hover-green focus-visible:text-hover-green';
+---
+
+<footer class="font-open text-rust">
+  <div class="bg-saddle px-2.5 pt-[50px] pb-5">
+    <div class="mx-auto grid max-w-site gap-5 md:grid-cols-3">
+      <div class="flex flex-col items-center gap-2.5 text-center">
+        <a href="/" class="block">
+          <img src="/images/maddox-realty-logo-450x130-1.webp" width="450" height="130" alt={SITE.name} class="h-auto w-[200px] max-w-[89vw]" loading="lazy" />
+        </a>
+        <p class="leading-[23px]">{SITE.address[0]}<br />{SITE.address[1]}</p>
+        {AGENTS.map((a) => (
+          <div class="flex flex-col items-center gap-2.5 leading-none">
+            <p class="pt-[15px] text-[17px] font-bold">{a.name}, {a.title}</p>
+            <p><a href={`tel:${a.phone}`} class={linkCls}>{a.phone}</a></p>
+            <p><a href={`mailto:${a.email}`} class={linkCls}>{a.email}</a></p>
+          </div>
+        ))}
+      </div>
+
+      <div class="flex flex-col items-center gap-5 text-center">
+        <p class="pt-[15px] text-[17px] font-bold">The Maddox Family</p>
+        <p>Bob, Roxanna, Miles, and McCall Maddox</p>
+        <a href="/images/maddox-family-may-2026.webp" class="block">
+          <img src="/images/maddox-family-may-2026.webp" width="1000" height="673" alt="The Maddox family: Miles, Roxanna, Bob and McCall Maddox" class="h-auto w-[342px] max-w-[89vw]" loading="lazy" />
+        </a>
+        <p><a href="/about-maddox-realty/" class={linkCls}>About Maddox Realty</a></p>
+      </div>
+
+      <div class="flex flex-col items-center gap-5 text-center">
+        <a href="https://www.trec.texas.gov/" target="_blank" rel="noreferrer" class="block">
+          <img src="/images/texas-real-estate-commission-logo3.webp" width="150" height="123" alt="Texas Real Estate Commission" loading="lazy" />
+        </a>
+        <p><a href="/docs/Information-About-Brokerage-Services.pdf" target="_blank" rel="noreferrer" class={linkCls}>Information About Brokerage Services</a></p>
+        <p><a href="/docs/Consumer-Protection.pdf" target="_blank" rel="noreferrer" class={linkCls}>Consumer Protection Notice</a></p>
+        {/* Live site links this logo to trec.texas.gov; fixed to the chamber's own site (exception 4). */}
+        <a href="http://www.jacksborochamber.com/" target="_blank" rel="noreferrer" class="block">
+          <img src="/images/jacksboro-chamber-2.webp" width="225" height="120" alt="Jacksboro Chamber of Commerce" loading="lazy" />
+        </a>
+        <p><a href="http://www.jacksborochamber.com/" target="_blank" rel="noreferrer" class={linkCls}>Member Since 1991</a></p>
+      </div>
+    </div>
+  </div>
+
+  <div class="bg-night px-2.5 py-2.5 text-center text-[13px] text-paper/40 [&_a]:text-paper/65 [&_a:hover]:text-paper">
+    <p>
+      Copyright {new Date().getFullYear()} <a href="/">Maddox Realty</a>&nbsp;| All Rights Reserved |&nbsp;<a href="/privacy-policy/">Privacy Policy</a> | Site by <a href="https://silverbulletwebsolutions.com/" target="_blank" rel="noreferrer">Silver Bullet Web Solutions</a>
+    </p>
+  </div>
+</footer>

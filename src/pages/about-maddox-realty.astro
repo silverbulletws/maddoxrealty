@@ -1,0 +1,28 @@
+---
+// outline: about-maddox-realty.md — office photo, then the story beside the sidebar.
+import Layout from '../layouts/Layout.astro';
+import PageHero from '../components/PageHero.astro';
+import SoldSidebar from '../components/SoldSidebar.astro';
+
+const paragraphs = [
+  'is a highly specialized real estate brokerage firm in north central Texas that predominantly showcases hunting properties and weekend recreational properties for sale. Owners Bob and Roxanna Maddox offer decades of real estate sales experience, including the sale of cattle ranches, and residential and commercial properties. Bob Maddox is widely experienced in tax-deferred real estate exchanges, wildlife management, and ranching. Bob is a member of the Kappa Sigma social fraternity and graduated in 1980 from Texas State University (formerly Southwest Texas State University) with a BBA in Management. Roxanna, a native of Jacksboro, received her BBA in Real Estate from Texas Christian University in 1979 where she served as the Service Projects Chair for the social sorority Delta Delta Delta. Bob and Roxanna are serving as elders at the Jacksboro Parish, and are members of the fundraising committee for The Concerned Citizens of Jack County, a nonprofit organization that serves the elderly and disabled of the community. Their two grown sons, Miles Maddox and McCall Maddox are both licensed Texas realtors and are now actively working alongside them at Maddox Realty.',
+  'Miles Maddox graduated from Vanderbilt University with a degree in economics in 2010. Miles has sixteen years of real estate experience that he brings to Maddox Realty. Miles’s real estate career began as a summer intern prior to his senior year at Vanderbilt University with The National Realty Group (that has since merged with Lee & Associates) in Houston, Texas where he continued to work following graduation until 2015. Miles then worked in the Dallas-Fort Worth area with the farm/ranch division of Briggs Freeman Sotheby’s International Realty before returning to his hometown in 2016 to join the family real estate firm. McCall Maddox, a 2017 Texas Christian University graduate, began working for the family business in January of 2026. McCall’s previous geological experience included his tenure at Selman & Associates and Baker Hughes in the Midland/Odessa area. McCall brings with him five years of expertise in lending and banking as he previously served as Assistant Vice President at the First State Bank of Graham. The Maddox family has been selling properties in Jack County and beyond since 1980, and look forward to continuing the legacy of serving any and all of your real estate needs.',
+  '“Real Estate has been our life and our livelihood, and we cannot imagine a profession that we would have enjoyed more than selling real estate. From the time our sons were old enough to walk, we have received such pleasure from the trips to the country for hunting, fishing, and enjoying our time together in the great outdoors,” remarks Bob Maddox.',
+  '“I cannot describe the joys and fun our family has shared at our ranch from the boys’ birthday parties through the years that began as small sleepovers and grew to hayrides, “snipe hunts,” and on to fraternity brother gatherings as they grew older,” commented Roxanna Maddox who still enjoys entertaining her family and friends at their family ranch. “Our ranch has blessed us in ways that are immeasurable. When we get the opportunity to sell real estate to others, there is such a sense of pride in knowing that they too will have the luxury of enjoying God’s nature and its many blessings,” she said.',
+];
+---
+
+<Layout title="About Maddox Realty" description="Maddox Realty is a family real estate brokerage in Jacksboro, Texas, selling hunting, recreational, residential and commercial properties since 1980.">
+  <PageHero image="/images/maddox-realty-office-jacksboro-texas-2.webp" />
+  <div class="px-2.5 py-[30px]">
+    <div class="mx-auto flex max-w-site flex-col gap-5 md:flex-row">
+      <div class="px-2.5 md:w-3/4">
+        <h1 class="mb-5 font-arial text-[32px] leading-tight text-black">About Maddox Realty in Jacksboro, Texas</h1>
+        <div class="space-y-3.5 font-open text-base leading-8 text-ink">
+          {paragraphs.map((p, i) => <p>{i === 0 && <><strong>Maddox Realty</strong> </>}{p}</p>)}
+        </div>
+      </div>
+      <SoldSidebar class="md:w-1/4" />
+    </div>
+  </div>
+</Layout>

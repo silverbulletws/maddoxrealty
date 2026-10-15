@@ -1,0 +1,69 @@
+@import 'tailwindcss';
+
+/* Self-hosted copies of the Google Fonts the WordPress site loaded. Open Sans
+   has no 200: the live summary text asks for 200 and gets 300, as here. */
+@import '@fontsource/open-sans/300.css';
+@import '@fontsource/open-sans/400.css';
+@import '@fontsource/open-sans/500.css';
+@import '@fontsource/open-sans/600.css';
+@import '@fontsource/open-sans/700.css';
+@import '@fontsource/roboto/400.css';
+@import '@fontsource/roboto/500.css';
+@import '@fontsource/roboto/700.css';
+@import '@fontsource/roboto-condensed/500.css';
+@import '@fontsource/bitter/700.css';
+
+/* Every colour, font, size and container width is a token here, built from
+   _source/design-tokens.json and the Elementor kit (post-8244.css). Never an
+   arbitrary hex in a component. */
+@theme {
+  /* Elementor global colours */
+  --color-brown: #5e3612; /* --e-global-color-b514d4a */
+  --color-tan: #dab99b; /* --e-global-color-18d7605: page background */
+  --color-saddle: #9e7c4b; /* --e-global-color-fbbe43f: footer, card border */
+  --color-gold: #bf9716; /* --e-global-color-750c19c: prices, button hover */
+  --color-banner: #be9715; /* "Under Contract" ribbon */
+  --color-card: #f5cba4; /* listing card background */
+  --color-rust: #5e1600; /* footer text */
+  --color-ink: #212934; /* property headings and body */
+  --color-slate: #4a4e57; /* "View our previously sold listings:" */
+  --color-body: #333333; /* hello-elementor default text */
+  --color-night: #1d242d; /* footer copyright bar */
+  --color-hover-green: #65bc7b; /* footer/sidebar link hover */
+  --color-hero-box: rgb(94 54 18 / 0.62); /* #5E36129E behind sold-page titles */
+  --color-sold-shade: rgb(0 0 0 / 0.4);
+  --color-map-border: #cccccc;
+  --color-paper: #ffffff;
+  --color-black: #000000;
+  --color-focus: #1a73e8;
+
+  --font-open: 'Open Sans', sans-serif;
+  --font-arial: Arial, sans-serif;
+  --font-roboto: Roboto, sans-serif;
+  --font-condensed: 'Roboto Condensed', sans-serif;
+  --font-bitter: Bitter, serif;
+  --font-system: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, 'Noto Sans', sans-serif;
+
+  --container-site: 1140px; /* .e-con max width */
+  --container-hero-box: 600px;
+}
+
+body {
+  font-family: var(--font-system);
+  color: var(--color-body);
+  line-height: 1.5;
+}
+
+/* Keyboard focus is always visible. :focus-visible only matches keyboard
+   navigation, so mouse users see the original design untouched. */
+:focus-visible {
+  outline: 2px solid var(--color-focus);
+  outline-offset: 2px;
+}
+
+/* Form inputs at 16px or iOS Safari zooms on focus (sanctioned exception 1). */
+input,
+select,
+textarea {
+  font-size: max(16px, 1em);
+}

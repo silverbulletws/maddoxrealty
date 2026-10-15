@@ -1,0 +1,53 @@
+---
+// One listing card (Elementor loop item 8263): cover photo with the
+// "Under Contract" ribbon or the SOLD! overlay, title, price, "More Details".
+import { Image } from 'astro:assets';
+import { priceText } from '../../lib/properties.js';
+
+const { entry } = Astro.props;
+const { data } = entry;
+const href = `/property/${entry.id}/`;
+const sold = data.status === 'sold';
+---
+
+<li class="card flex h-full flex-col justify-between border border-saddle bg-card transition-shadow duration-300 hover:shadow-[0_0_0_3px_var(--color-saddle)]">
+  <div class="flex flex-col gap-5">
+    <div class="relative overflow-hidden">
+      {data.underContract && !sold && (
+        <div class="absolute top-[30px] left-0 z-10">
+          <div class="ribbon relative mr-[15px] bg-banner py-[5px] pr-[15px] pl-2.5 text-sm font-bold text-paper uppercase">Under Contract</div>
+        </div>
+      )}
+      {sold && (
+        <div class="absolute inset-0 z-[5] flex items-center justify-center bg-sold-shade">
+          <img src="/images/sold-transparent.webp" width="621" height="204" alt="Sold" class="h-auto max-w-[80%] opacity-80" loading="lazy" />
+        </div>
+      )}
+      <a href={href} tabindex="-1" aria-hidden="true">
+        {data.image ? (
+          <Image src={data.image} alt={data.imageAlt} width={800} class="block h-[200px] w-full object-cover" />
+        ) : (
+          <div class="h-[200px] w-full"></div>
+        )}
+      </a>
+    </div>
+    <h3 class="block h-[4em] px-[25px] pt-2.5 font-bitter text-[19px] leading-6 font-bold text-black uppercase">
+      <a href={href} class="transition-colors duration-500 hover:text-gold">{data.title}</a>
+    </h3>
+    <p class="flex justify-end px-[25px] font-bitter text-2xl font-bold text-gold">{priceText(data)}</p>
+  </div>
+  <a href={href} class="mt-5 block bg-black px-6 py-3 text-center font-roboto text-[15px] leading-none font-medium text-paper hover:bg-gold" aria-label={`More details: ${data.title}`}>More Details</a>
+</li>
+
+<style>
+  /* Arrow on the right end of the ribbon. */
+  .ribbon::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: -15px;
+    border-style: solid;
+    border-width: 15px 0 15px 15px;
+    border-color: transparent transparent transparent var(--color-banner);
+  }
+</style>

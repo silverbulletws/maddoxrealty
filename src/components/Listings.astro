@@ -1,0 +1,33 @@
+---
+// The listing body shared by the home page and the Sold pages: the first
+// category's heading across the top, then a row of [every category's grids |
+// sidebar]. `sections` is one entry per category: { category, grids: [[entry…]…] }.
+// The home page draws a rule under each heading and anchors it for the
+// category buttons; the Sold pages don't.
+import PropertyGrid from './property/PropertyGrid.astro';
+import SoldSidebar from './SoldSidebar.astro';
+
+const { sections, divider = false } = Astro.props;
+const [first] = sections;
+const headingCls = 'font-arial text-[32px] leading-none text-black';
+---
+
+<section class="px-2.5 py-[30px]">
+  <h2 class:list={['mx-auto max-w-site', headingCls]}>{first.category.title}</h2>
+</section>
+
+<div class="px-2.5 pb-[30px]">
+  <div class="mx-auto flex max-w-site flex-col gap-5 lg:flex-row">
+    <div class="flex min-w-0 flex-1 flex-col gap-5 px-2.5">
+      {sections.map((s, i) => (
+        <>
+          {i > 0 && <h2 class:list={['pt-[30px]', headingCls]}>{s.category.title}</h2>}
+          {divider && <hr class="my-[15px] border-0 border-t border-saddle" />}
+          {divider && <div id={s.category.anchor} class="scroll-mt-4"></div>}
+          {s.grids.map((entries) => <PropertyGrid entries={entries} />)}
+        </>
+      ))}
+    </div>
+    <SoldSidebar class="lg:w-[250px] lg:flex-none" />
+  </div>
+</div>

@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "site": { "name": "Maddox Realty", "url": "https://maddoxrealty.com" },
+  "collections": [
+    {
+      "key": "property",
+      "label": "Properties",
+      "singular": "Property",
+      "folder": "src/content/property",
+      "path": "{slug}/index.md",
+      "url": "/property/{slug}/",
+      "slug": { "from": "title" },
+      "list": { "title": "title", "date": "date", "image": "image", "sort": "-date" },
+      "images": { "store": "beside", "maxWidth": 1600, "name": "{n}-{file}" },
+      "fields": [
+        { "name": "title", "label": "Title", "type": "text", "required": true,
+          "help": "The address or acreage, as it should appear on the listing card, like \"42.7 Acres – Hwy 114\"." },
+        { "name": "date", "label": "Date listed", "type": "date", "required": true,
+          "help": "Listings show newest first. Change it to move a property up or down its list." },
+        { "name": "status", "label": "Status", "type": "select", "required": true, "default": "available",
+          "options": [
+            { "value": "available", "label": "Available (shows on the home page)" },
+            { "value": "sold", "label": "Sold" },
+            { "value": "unlisted", "label": "Not listed (its own page only)" }
+          ],
+          "help": "Sold properties show on the Sold page for their year, and on the home page in the newest year." },
+        { "name": "soldYear", "label": "Year sold", "type": "number",
+          "help": "Only for sold properties. Puts it on that year's Sold page, such as 2026." },
+        { "name": "underContract", "label": "Under contract", "type": "boolean",
+          "help": "Adds the gold \"Under Contract\" ribbon to an available property's photo." },
+        { "name": "hunting", "label": "Hunting & Recreational Ranches", "type": "boolean",
+          "help": "Tick every section the property belongs in. It can be in more than one." },
+        { "name": "residential", "label": "Residential", "type": "boolean" },
+        { "name": "commercial", "label": "Commercial", "type": "boolean" },
+        { "name": "price", "label": "Price", "type": "text",
+          "help": "Exactly as it should show, like \"$542,290\" or \"$7,250\"." },
+        { "name": "perAcre", "label": "Price is per acre", "type": "boolean",
+          "help": "Adds \"Per Acre\" after the price." },
+        { "name": "size", "label": "Size", "type": "text",
+          "help": "Optional, like \"42.7 Acres\". Shows as \"Size: 42.7 Acres\" under the price." },
+        { "name": "image", "label": "Cover photo", "type": "image", "alt": "imageAlt",
+          "images": { "store": "beside", "maxWidth": 1600, "name": "cover-{file}" },
+          "help": "The photo on the listing card and the first one in the gallery." },
+        { "name": "photos", "label": "Gallery photos", "type": "photos", "exclude": ["cover-*"],
+          "help": "Shown after the cover photo, in the order they were added." },
+        { "name": "features", "label": "Property features", "type": "tags",
+          "help": "Short points such as \"Barn\" or \"Close To 2 Lakes\". Each shows on its own line." },
+        { "name": "map", "label": "Map location", "type": "text",
+          "help": "Latitude and longitude from Google Maps, like \"33.2033,-98.1888\", or a street address. Leave blank for no map." },
+        { "name": "description", "label": "Search description", "type": "textarea", "maxLength": 160,
+          "help": "What Google shows under the link. Left blank, the start of the summary is used." }
+      ]
+    }
+  ]
+}

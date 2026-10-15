@@ -1,0 +1,38 @@
+---
+// The right-hand column on the home, sold, about and property pages (Elementor
+// template 8253, and its copy inside the property template 8256): year buttons
+// for the Sold pages, the agents, and an "About Maddox Realty" button.
+//   variant="listing"  — home, sold years, about: brown names, all four agents,
+//                        outlined About button.
+//   variant="property" — property pages: black names, three agents (the
+//                        property template on the live site never got McCall),
+//                        filled About button.
+import { AGENTS, SOLD_YEARS } from '../config/site.js';
+
+const { variant = 'listing', class: cls = '' } = Astro.props;
+const property = variant === 'property';
+const agents = property ? AGENTS.slice(0, 3) : AGENTS;
+---
+
+<aside aria-label="Sold listings and contacts" class:list={['flex flex-col items-center gap-5 px-2.5 pt-[15px] text-center font-open', cls]}>
+  <h2 class="text-[17px] leading-7 font-bold text-slate">View our previously<br />sold listings:</h2>
+  <ul class="flex flex-wrap justify-center gap-[5px]">
+    {SOLD_YEARS.map((year) => (
+      <li class="w-[55px]">
+        <a href={`/${year}-sold/`} class="block rounded-[3px] bg-brown p-1.5 text-base leading-none font-medium text-paper hover:text-hover-green" aria-label={`Properties sold in ${year}`}>{year}</a>
+      </li>
+    ))}
+  </ul>
+  {agents.map((a) => (
+    <div class="flex flex-col items-center gap-5 leading-none">
+      <p class:list={['pt-[15px] text-[17px] leading-tight font-bold', property ? 'text-black' : 'text-brown']}>{a.name}, {a.title}</p>
+      <p><a href={`tel:${a.phone}`} class="text-ink hover:text-saddle">{a.phone}</a></p>
+      <p><a href={`mailto:${a.email}`} class="text-ink hover:text-saddle">{a.email}</a></p>
+    </div>
+  ))}
+  {property ? (
+    <a href="/about-maddox-realty/" class="rounded-[3px] bg-brown p-1.5 text-base leading-none font-medium text-paper hover:text-hover-green">About Maddox Realty</a>
+  ) : (
+    <a href="/about-maddox-realty/" class="block w-full max-w-[300px] border border-black p-2.5 font-condensed text-[13px] leading-none font-medium text-black uppercase hover:bg-black hover:text-tan">About Maddox Realty</a>
+  )}
+</aside>

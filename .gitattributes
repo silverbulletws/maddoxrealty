@@ -1,0 +1,14 @@
+# LF in the repo whatever the OS, so a Windows checkout doesn't show every
+# file as changed. Binary files are never touched.
+* text=auto eol=lf
+
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.avif binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.pdf binary

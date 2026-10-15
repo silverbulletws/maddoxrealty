@@ -1,0 +1,42 @@
+---
+// outline: privacy-policy.md. The live page also prints a block of leftover
+// Fusion Builder shortcodes above the policy and runs under the header; both
+// are fixed here (sanctioned exception 4).
+import Layout from '../layouts/Layout.astro';
+
+const sections = [
+  { heading: 'WHAT INFORMATION DO WE COLLECT?', body: ['We collect information from you when you register on our site, fill out a form, and often when a purchase of a product is made at our physical store or on-location where services are rendered.'] },
+  {
+    heading: 'WHAT DO WE USE YOUR INFORMATION FOR?',
+    body: ['Any of the information we collect from you may be used in any of the following ways:'],
+    list: [
+      'To personalize your experience – Your information helps us to better respond to your individual needs.',
+      'To improve customer services – Your information helps us to more effectively respond to your customer service requests and support needs.',
+      'To process transactions – Your information, whether public or private, will not be sold, exchanged, transferred, or given to any other company for any reason whatsoever, without your consent, other than for the express purpose of delivering the purchased product or service requested by the customer.',
+      'To send periodic emails – The email address you provide for order processing may be used to sent you information and updates pertaining to your order, in addition to receiving occasional company news, updates, related product or service information, etc.',
+    ],
+  },
+  { heading: 'HOW DO WE PROTECT YOUR INFORMATION?', body: ['We implement a variety of security measures to maintain the safety of your personal information when you access your personal information.'] },
+  { heading: 'DO WE USE COOKIES', body: ['We do not use cookies.'] },
+  { heading: 'DO WE DISCLOSE ANY INFORMATION TO OUTSIDE PARTIES?', body: ['We do not sell, trade, or otherwise transfer to outside parties your personally identifiable information. This does not include trusted third parties who assist us in operating our business or servicing you, so long as those parties agree to keep this information confidential. We may also release your information when we believe release is appropriate to comply with the law, enforce our site policies, or protect our or others’ rights, property, or safety. However, non-personally identifiable visitor information may be provided to other parties for marketing, advertising, or other uses.'] },
+  { heading: 'THIRD-PARTY LINKS', body: ['Occasionally, at our discretion, we may include or offer third-party products or services on our website. These third-party sites have separate and independent privacy policies. We, therefore, have no responsibility or liability for the content and activities of these linked sites. Nonetheless, we seek to protect the integrity of our site and welcome any feedback about these sites.'] },
+  { heading: 'YOUR CONSENT', body: ['By using our site, you consent to our privacy policy.'] },
+  { heading: 'CHANGES TO OUR PRIVACY POLICY', body: ['If we decide to change our privacy, we will post those changes on this page.'] },
+];
+---
+
+<Layout title="Privacy Policy">
+  <div class="bg-paper px-2.5 pt-8 pb-12 md:pt-[180px]">
+    <div class="mx-auto max-w-site font-roboto text-[15px] text-body">
+      <h1 class="mb-4 text-[40px] leading-tight font-medium">PRIVACY POLICY</h1>
+      <p class="mb-4 text-[28px] leading-tight font-medium">This policy was last modified on September 20, 2021.</p>
+      {sections.map((s) => (
+        <section>
+          <h2 class="mt-6 mb-4 text-[36px] leading-tight font-medium">{s.heading}</h2>
+          {s.body.map((p) => <p class="mb-4">{p}</p>)}
+          {s.list && <ul class="mb-4 list-disc pl-10">{s.list.map((li) => <li>{li}</li>)}</ul>}
+        </section>
+      ))}
+    </div>
+  </div>
+</Layout>

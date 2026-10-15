@@ -1,0 +1,72 @@
+---
+// The property photo gallery: a large photo, a scrolling row of thumbnails
+// that swap it, and a full-size viewer on click (the live site's custom
+// prop-gallery shortcode). The viewer is a native <dialog>, so it traps focus
+// and closes on Escape.
+import { Image, getImage } from 'astro:assets';
+
+const { photos, title } = Astro.props;
+const large = await Promise.all(photos.map((p) => getImage({ src: p, width: Math.min(1600, p.width), quality: 80 })));
+const n = photos.length;
+---
+
+{n > 0 && (
+  <div class="gallery w-full" data-gallery>
+    <button type="button" class="main relative block w-full cursor-pointer overflow-hidden rounded-lg shadow-[0_4px_10px_rgba(0,0,0,0.1)]" data-open aria-label={`View photo full size`} aria-haspopup="dialog">
+      <img src={large[0].src} alt={`${title}, photo 1 of ${n}`} width={large[0].attributes.width} height={large[0].attributes.height} class="block h-[500px] w-full object-contain" data-main fetchpriority="high" />
+      <span class="pointer-events-none absolute top-2.5 right-2.5 rounded bg-black/50 px-3 py-2 text-paper" aria-hidden="true">
+        <svg class="h-3.5 w-3.5 fill-current" viewBox="0 0 512 512"><path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM184 296c0 13.3 10.7 24 24 24s24-10.7 24-24V232h64c13.3 0 24-10.7 24-24s-10.7-24-24-24H232V120c0-13.3-10.7-24-24-24s-24 10.7-24 24v64H120c-13.3 0-24 10.7-24 24s10.7 24 24 24h64v64z"/></svg>
+      </span>
+    </button>
+    {n > 1 && (
+      <ul class="mt-[15px] flex gap-2.5 overflow-x-auto pb-[5px]" aria-label="Photos">
+        {photos.map((photo, i) => (
+          <li class="flex-none">
+            <button
+              type="button"
+              class="thumb block h-[125px] w-[125px] cursor-pointer rounded border-2 border-transparent opacity-70 transition-opacity aria-pressed:border-brown aria-pressed:opacity-100"
+              aria-pressed={i === 0 ? 'true' : 'false'}
+              aria-label={`Show photo ${i + 1} of ${n}`}
+              data-src={large[i].src}
+              data-w={large[i].attributes.width}
+              data-h={large[i].attributes.height}
+            >
+              <Image src={photo} alt="" width={250} class="block h-full w-full rounded-sm object-contain" />
+            </button>
+          </li>
+        ))}
+      </ul>
+    )}
+    <dialog class="m-auto max-h-[90vh] max-w-[90vw] overflow-visible bg-transparent p-0 backdrop:bg-black/90" data-viewer aria-label={`${title} photo`}>
+      <form method="dialog">
+        <button class="fixed top-[15px] right-[35px] cursor-pointer text-[40px] leading-none font-bold text-[#f1f1f1]" aria-label="Close photo">×</button>
+      </form>
+      <img src={large[0].src} alt="" class="block h-auto max-h-[90vh] w-auto max-w-[90vw] bg-paper shadow-[0_0_20px_rgba(0,0,0,0.5)]" data-full />
+    </dialog>
+  </div>
+)}
+
+<script>
+  for (const gallery of document.querySelectorAll<HTMLElement>('[data-gallery]')) {
+    const main = gallery.querySelector<HTMLImageElement>('[data-main]')!;
+    const full = gallery.querySelector<HTMLImageElement>('[data-full]')!;
+    const viewer = gallery.querySelector<HTMLDialogElement>('[data-viewer]')!;
+    const thumbs = [...gallery.querySelectorAll<HTMLButtonElement>('.thumb')];
+    thumbs.forEach((thumb, i) => {
+      thumb.addEventListener('click', () => {
+        main.src = thumb.dataset.src!;
+        main.width = Number(thumb.dataset.w);
+        main.height = Number(thumb.dataset.h);
+        main.alt = main.alt.replace(/photo \d+ of/, `photo ${i + 1} of`);
+        for (const t of thumbs) t.setAttribute('aria-pressed', String(t === thumb));
+      });
+    });
+    gallery.querySelector('[data-open]')!.addEventListener('click', () => {
+      full.src = main.src;
+      full.alt = main.alt;
+      viewer.showModal();
+    });
+    // A click on the dark backdrop closes it too.
+    viewer.addEventListener('click', (e) => { if (e.target === viewer) viewer.close(); });
+  }
+</script>

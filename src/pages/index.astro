@@ -1,0 +1,24 @@
+---
+// outline: home.md — hero, category buttons, then every category's listings:
+// what's for sale, then the newest year's sales.
+import Layout from '../layouts/Layout.astro';
+import CategoryButtons from '../components/home/CategoryButtons.astro';
+import Listings from '../components/Listings.astro';
+import { CATEGORIES } from '../config/site.js';
+import { getProperties, isForSale, isRecentlySold } from '../lib/properties.js';
+
+const properties = await getProperties();
+const sections = CATEGORIES.map((category) => {
+  const inCategory = properties.filter((p) => p.data[category.key]);
+  return { category, grids: [inCategory.filter(isForSale), inCategory.filter(isRecentlySold)] };
+});
+---
+
+<Layout title="">
+  <h1 class="sr-only">Maddox Realty – Beautiful Residential, Hunting &amp; Recreational Ranches Properties</h1>
+  <div class="bg-cover bg-top bg-no-repeat md:h-[620px]" style="background-image:url(/images/maddox-cattle-portrait2-1.webp)">
+    <div class="h-[220px] md:h-full"></div>
+  </div>
+  <CategoryButtons />
+  <Listings sections={sections} divider />
+</Layout>

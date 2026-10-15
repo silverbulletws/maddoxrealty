@@ -1,0 +1,15 @@
+---
+// outline: home.md SECTION 1 — the three buttons under the hero that jump to
+// each listing section.
+import { CATEGORIES } from '../../config/site.js';
+---
+
+<nav aria-label="Property types" class="bg-tan px-2.5 py-[30px]">
+  <ul class="mx-auto flex max-w-site flex-col items-center justify-center gap-5 md:flex-row">
+    {CATEGORIES.map((c) => (
+      <li class="w-full max-w-[300px]">
+        <a href={`/#${c.anchor}`} class="block border border-black p-2.5 text-center font-condensed text-[13px] leading-[13px] font-medium text-black uppercase transition-transform duration-300 hover:scale-110 hover:bg-black hover:text-tan">{c.button}</a>
+      </li>
+    ))}
+  </ul>
+</nav>
